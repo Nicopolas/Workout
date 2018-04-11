@@ -1,7 +1,9 @@
 package zakharov.nikolay.com.workout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import android.net.Uri;
+import android.widget.Toast;
 
 import zakharov.nikolay.com.workout.model.Workout;
 import zakharov.nikolay.com.workout.model.WorkoutList;
@@ -85,6 +90,7 @@ public class WorkoutDetailActivity extends AppCompatActivity {
         ShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                smsSend(recordDateTextView.getText().toString());
                 //сюда неявный интент
             }
         });
@@ -106,5 +112,12 @@ public class WorkoutDetailActivity extends AppCompatActivity {
         workoutDescriptionTextView = findViewById(R.id.description_text_view);
     }
 
-
+    public void smsSend(String text) {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_TEXT, recordDateTextView.getText() + "\n" + recordRepsCountTextView.getText());
+        i.putExtra(Intent.EXTRA_SUBJECT,
+                "komuto");
+        startActivity(i);
+    }
 }
