@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">Workout</string>
+    <string name="app_name">Workout_april</string>
+    <string name="pull_ups_string">Подтягивания</string>
+    <string name="long_text">Pellentesque neque eros, feugiat sed convallis at, scelerisque vel odio. Etiam placerat ut libero a hendrerit. Donec a egestas turpis, vitae porta massa. Nam at nisi in turpis eleifend ultrices. Morbi egestas justo vel lacus lobortis hendrerit. Suspendisse tempus, dolor quis mattis finibus, elit mauris lobortis nunc, a varius neque mi vel magna. Quisque quis nibh lacus. Curabitur vitae mollis mi. Vivamus dignissim volutpat vulputate. Nulla aliquet vestibulum diam eget laoreet.
+
+Phasellus urna velit, accumsan nec dolor eget, suscipit malesuada magna. Fusce fringilla cursus nulla, in vestibulum metus vestibulum sit amet. Vivamus at gravida sem. Donec eu massa porta, tincidunt odio ut, vehicula mauris. Aenean a malesuada ligula, et vestibulum ipsum. Ut justo elit, lacinia id nunc id, volutpat finibus diam. Maecenas eu elit sagittis, maximus purus ac, consequat diam. Donec sed volutpat magna, a ornare libero. Aenean auctor volutpat commodo. Integer in eleifend sem, eu elementum purus. Phasellus rhoncus lacus sit amet risus rhoncus blandit. Pellentesque quis tempor odio. Vivamus posuere ex eget dolor sollicitudin molestie. Sed viverra mi at vestibulum condimentum.</string>
+    <string name="repeat_count_label">Количество повторов: {0}</string>
+    <string name="record_reps_label">Повторов: {0}</string>
+    <string name="record_date_label">Дата: {0}</string>
+    <string name="text_btn_share">Поделиться</string>
 </resources>
