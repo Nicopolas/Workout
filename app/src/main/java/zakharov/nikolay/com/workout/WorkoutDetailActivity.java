@@ -3,7 +3,6 @@ package zakharov.nikolay.com.workout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,13 +16,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import android.net.Uri;
-import android.widget.Toast;
-
 import zakharov.nikolay.com.workout.model.Workout;
 import zakharov.nikolay.com.workout.model.WorkoutList;
 
 public class WorkoutDetailActivity extends AppCompatActivity {
+    private static final String EXTRA_REPS_COUNT =
+            "zakharov.nikolay.com.workout.WorkoutDetailActivity.repsCount";
     Button saveRecordButton;
     Button ShareButton;
     SeekBar repsSeekBar;
@@ -36,6 +34,10 @@ public class WorkoutDetailActivity extends AppCompatActivity {
 
     int repsCount = 0;
     int workoutIndex;
+
+    public static int getRepsCountForResult(Intent result) {
+        return result.getIntExtra(EXTRA_REPS_COUNT, 0);
+    }//методы для вызова переменных из результата
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class WorkoutDetailActivity extends AppCompatActivity {
                             MessageFormat.format(WorkoutDetailActivity.this.getString(R.string.record_reps_label), repsCount));
                     recordDateTextView.setText(
                             MessageFormat.format(WorkoutDetailActivity.this.getString(R.string.record_date_label), sdf.format(new Date())));
+                    setResult();
                 }
                 //возврат результата c помощью интента
 //                Intent resultIntent = getIntent();
@@ -90,8 +93,7 @@ public class WorkoutDetailActivity extends AppCompatActivity {
         ShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                smsSend(recordDateTextView.getText().toString());
-                //сюда неявный интент
+                sendOut();
             }
         });
     }
@@ -112,12 +114,16 @@ public class WorkoutDetailActivity extends AppCompatActivity {
         workoutDescriptionTextView = findViewById(R.id.description_text_view);
     }
 
-    public void smsSend(String text) {
+    public void sendOut() {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("text/plain");
         i.putExtra(Intent.EXTRA_TEXT, recordDateTextView.getText() + "\n" + recordRepsCountTextView.getText());
-        i.putExtra(Intent.EXTRA_SUBJECT,
-                "komuto");
         startActivity(i);
     }
+
+    private void setResult() {
+        Intent data = new Intent();
+        data.putExtra(EXTRA_REPS_COUNT, repsCount);//добавляем в интент repsCount
+        setResult(RESULT_OK, data);
+    } //заполнение интента результата
 }
