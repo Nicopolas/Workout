@@ -25,14 +25,14 @@ public class MainActivity extends AppCompatActivity {
         WorkoutList.getInstance(this);
         initGUI();
         setListeners();
-        workout_2.setText("Повторов: " + WorkoutList.getWorkouts().get(2).getRecordCount());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE) {
+            workout_1.setText("Повторов: " + WorkoutList.getWorkouts().get(1).getRecordCount());//через синглтон
             if (data != null) {
-                workout_2.setText("Повторов: " + WorkoutDetailActivity.getRepsCountForResult(data));
+                workout_2.setText("Повторов: " + WorkoutDetailActivity.getRepsCountForResult(data));//через резулт
             }
         }
     }
