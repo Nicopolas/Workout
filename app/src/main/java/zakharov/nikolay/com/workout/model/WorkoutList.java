@@ -30,7 +30,7 @@ public class WorkoutList {
             Workout workout = new Workout();
             workout.setTitle("Упражнение " + i);
             workout.setDescription("Описание упражнения " + i);
-            workout.setRecordCount(i);
+            workout.setRecordCount(0);
             workout.setRecordDate(new Date());
             workouts.add(workout);
         }
