@@ -1,107 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
+    android:paddingBottom="4dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="4dp"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""/>
-    </LinearLayout>
+    <!--   <android.support.v7.widget.RecyclerView
+           android:id="@+id/workout_recycler_view"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_gravity="center">
+           FrameLayout -->
 
     <LinearLayout
+        android:id="@+id/workout_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/DarkGray"
-        android:paddingBottom="3dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" />
+        android:layout_height="match_parent"
+        android:layout_gravity="top"
+        android:layout_marginBottom="100dp"
+        android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-        <Button
-            android:id="@+id/workout_1"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Упражнение 1"
-            android:textSize="24sp" />
+            android:padding="4dp">
+
+            <ImageView
+                android:id="@+id/workout_list_item_image_view"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@color/DarkGray"
+                android:padding="4dp" />
+
+            <TextView
+                android:id="@+id/workout_list_title_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@id/workout_list_item_image_view"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Название упражнения которое может быть длинным"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/workout_list_description_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/workout_list_title_text_view"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@id/workout_list_item_image_view"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="Длинное описание управжнения, Длинное описание управжнения, Длинное описание управжнения, Длинное описание управжнения " />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/DarkGray"
+            android:paddingBottom="1dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/DarkGray"
+            android:paddingBottom="1dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/reps_count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:text="18 повторов"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/last_record_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:padding="4dp"
+                android:text="13.04.2018"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/DarkGray"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/DarkGray"
-        android:paddingBottom="3dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" />
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/workout_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Упражнение 2"
-        android:textSize="24sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="2dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/DarkGray"
-        android:paddingBottom="3dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:text="@string/first_check_box"
+                android:textStyle="bold" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Упражнение 3"
-        android:textSize="24sp" />
+            <CheckBox
+                android:id="@+id/firstCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/DarkGray"
-        android:paddingBottom="3dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" />
+        </LinearLayout>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Упражнение 4"
-        android:textSize="24sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="2dp">
 
-</LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:text="@string/second_check_box"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/secondCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:text="@string/third_check_box"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/thirdCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <!--  </android.support.v7.widget.RecyclerView> -->
+</FrameLayout>

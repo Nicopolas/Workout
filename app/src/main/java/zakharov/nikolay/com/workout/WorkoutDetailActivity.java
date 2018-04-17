@@ -1,5 +1,6 @@
 package zakharov.nikolay.com.workout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -26,6 +28,12 @@ public class WorkoutDetailActivity extends AppCompatActivity {
             "zakharov.nikolay.com.workout.WorkoutDetailActivity.repsCount";
     private static final String EXTRA_LAST_RECORD_DATE =
             "zakharov.nikolay.com.workout.answer_shown";
+    private static final String EXTRA_FIRST_CHECK_BOX_IS_CHECKED =
+            "firstCheckBoxIsChecked";
+    private static final String EXTRA_SECOND_CHECK_BOX_IS_CHECKED =
+            "secondCheckBoxIsChecked";
+    private static final String EXTRA_THIRD_CHECK_BOX_IS_CHECKED =
+            "thirdCheckBoxIsChecked";
     Button saveRecordButton;
     Button ShareButton;
     SeekBar repsSeekBar;
@@ -40,6 +48,14 @@ public class WorkoutDetailActivity extends AppCompatActivity {
     int workoutIndex;
     String lastRecordDate;
 
+    public static Intent newIntent(Context packageContext, boolean firstCheckBox, boolean secondCheckBox, boolean thirdCheckBox) {
+        Intent intent = new Intent(packageContext, WorkoutDetailActivity.class);// создаем интент
+        intent.putExtra(EXTRA_FIRST_CHECK_BOX_IS_CHECKED, firstCheckBox);
+        intent.putExtra(EXTRA_SECOND_CHECK_BOX_IS_CHECKED, secondCheckBox);
+        intent.putExtra(EXTRA_THIRD_CHECK_BOX_IS_CHECKED, thirdCheckBox);
+        return intent;
+    }//статичный метод возвращающий интент (при создании)
+
     public static int getRepsCountForResult(Intent result) {
         return result.getIntExtra(EXTRA_REPS_COUNT, 0);
     }//методы для вызова переменных из результата
@@ -50,6 +66,7 @@ public class WorkoutDetailActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout_detail);
+        checkCheckBoxMainActivity();
 
         workoutIndex = getIntent().getIntExtra(MainActivity.WORKOUT_INDEX, 0);
 
@@ -190,5 +207,33 @@ public class WorkoutDetailActivity extends AppCompatActivity {
     private String dataFormat(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy 'в' HH:mm:ss", new Locale("ru"));
         return dateFormat.format(date).toString();
+    }
+
+    private void checkCheckBoxMainActivity() {
+        if (getIntent().getBooleanExtra(EXTRA_FIRST_CHECK_BOX_IS_CHECKED, false)) {
+            makeToast("Первый чесбокс On");
+        }
+        else {
+            makeToast("Первый чесбокс Off");
+        }
+
+        if (getIntent().getBooleanExtra(EXTRA_SECOND_CHECK_BOX_IS_CHECKED, false)) {
+            makeToast("Второй чесбокс On");
+        }
+        else {
+            makeToast("Второй чесбокс Off");
+        }
+
+        if (getIntent().getBooleanExtra(EXTRA_THIRD_CHECK_BOX_IS_CHECKED, false)) {
+            makeToast("Третий чесбокс On");
+        }
+        else {
+            makeToast("Третий чесбокс Off");
+        }
+    }
+
+    private void makeToast(String string) {
+        Toast toast = Toast.makeText(this, string, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

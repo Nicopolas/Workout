@@ -8,4 +8,7 @@ Phasellus urna velit, accumsan nec dolor eget, suscipit malesuada magna. Fusce f
     <string name="record_reps_label">Повторов: {0}</string>
     <string name="record_date_label">Дата: {0}</string>
     <string name="text_btn_share">Поделиться</string>
+    <string name="first_check_box">Первый чекбокс</string>
+    <string name="second_check_box">Второй чекбокс</string>
+    <string name="third_check_box">Третий чекбокс</string>
 </resources>
