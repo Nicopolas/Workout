@@ -43,13 +43,17 @@ public class WorkoutDetailActivity extends AppCompatActivity {
     TextView workoutTitleTextView;
     TextView workoutDescriptionTextView;
     ImageView pullUpsImageView;
+    TextView firstExtraField;
+    TextView secondExtraField;
+    TextView thirdExtraField;
 
     int repsCount = 0;
     int workoutIndex;
     String lastRecordDate;
 
-    public static Intent newIntent(Context packageContext, boolean firstCheckBox, boolean secondCheckBox, boolean thirdCheckBox) {
+    public static Intent newIntent(Context packageContext, int workoutIndex, boolean firstCheckBox, boolean secondCheckBox, boolean thirdCheckBox) {
         Intent intent = new Intent(packageContext, WorkoutDetailActivity.class);// создаем интент
+        intent.putExtra(MainActivity.WORKOUT_INDEX, workoutIndex);
         intent.putExtra(EXTRA_FIRST_CHECK_BOX_IS_CHECKED, firstCheckBox);
         intent.putExtra(EXTRA_SECOND_CHECK_BOX_IS_CHECKED, secondCheckBox);
         intent.putExtra(EXTRA_THIRD_CHECK_BOX_IS_CHECKED, thirdCheckBox);
@@ -66,11 +70,12 @@ public class WorkoutDetailActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout_detail);
-        checkCheckBoxMainActivity();
 
         workoutIndex = getIntent().getIntExtra(MainActivity.WORKOUT_INDEX, 0);
 
         initGUI(workoutIndex);
+        setListeners();
+        checkCheckBoxMainActivity();
 
         if (savedInstanceState != null) {
             repsCount = savedInstanceState.getInt(EXTRA_REPS_COUNT, 0);
@@ -96,38 +101,6 @@ public class WorkoutDetailActivity extends AppCompatActivity {
 
             }
         });
-
-        saveRecordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setDataRecord();
-                setResult();
-                WorkoutList.getWorkouts().get(workoutIndex).setRecordCount(repsCount);
-            }
-        });
-
-        ShareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendOut();
-            }
-        });
-    }
-
-    private void initGUI(int index) {
-        Workout workout = WorkoutList.getWorkoutByIndex(index);
-
-        saveRecordButton = findViewById(R.id.save_record_button);
-        ShareButton = findViewById(R.id.btn_share);
-        repsSeekBar = findViewById(R.id.reps_seek_bar);
-        repsCountTextView = findViewById(R.id.reps_count_text_view);
-        recordDateTextView = findViewById(R.id.record_date_text_view);
-        recordDateTextView.setText(new SimpleDateFormat("dd.MM.yyy").format(workout.getRecordDate()));
-        recordRepsCountTextView = findViewById(R.id.record_reps_text_view);
-        recordRepsCountTextView.setText(String.valueOf(workout.getRecordCount()));
-        workoutTitleTextView = findViewById(R.id.workout_title_lable);
-        workoutTitleTextView.setText(workout.getTitle());
-        workoutDescriptionTextView = findViewById(R.id.description_text_view);
     }
 
     public void sendOut() {
@@ -187,6 +160,53 @@ public class WorkoutDetailActivity extends AppCompatActivity {
     }
 
 
+    private void initGUI(int index) {
+        Workout workout = WorkoutList.getWorkoutByIndex(index);
+
+        pullUpsImageView = findViewById(R.id.pull_ups_image_view);
+        saveRecordButton = findViewById(R.id.save_record_button);
+        ShareButton = findViewById(R.id.btn_share);
+        repsSeekBar = findViewById(R.id.reps_seek_bar);
+        repsCountTextView = findViewById(R.id.reps_count_text_view);
+        recordDateTextView = findViewById(R.id.record_date_text_view);
+        recordDateTextView.setText(new SimpleDateFormat("dd.MM.yyy").format(workout.getRecordDate()));
+        recordRepsCountTextView = findViewById(R.id.record_reps_text_view);
+        recordRepsCountTextView.setText(String.valueOf(workout.getRecordCount()));
+        workoutTitleTextView = findViewById(R.id.workout_title_lable);
+        workoutTitleTextView.setText(workout.getTitle());
+        workoutDescriptionTextView = findViewById(R.id.description_text_view);
+        firstExtraField = findViewById(R.id.first_extra_field);
+        firstExtraField.setText(R.string.first_extra_field_text);
+        secondExtraField = findViewById(R.id.second_extra_field);
+        thirdExtraField = findViewById(R.id.third_extra_field);
+    }
+
+    private void setListeners() {
+        workoutDescriptionTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firstExtraField.setText("test");
+            }
+        });
+
+
+        saveRecordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setDataRecord();
+                setResult();
+                WorkoutList.getWorkouts().get(workoutIndex).setRecordCount(repsCount);
+            }
+        });
+
+        ShareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendOut();
+            }
+        });
+    }
+
     private void setDataRecord() {
         int reps = Integer.parseInt(repsCountTextView.getText().toString().replaceAll("\\D", ""));
         if (recordRepsCountTextView.getText() != null && repsCount < reps) {
@@ -210,26 +230,17 @@ public class WorkoutDetailActivity extends AppCompatActivity {
     }
 
     private void checkCheckBoxMainActivity() {
-        if (getIntent().getBooleanExtra(EXTRA_FIRST_CHECK_BOX_IS_CHECKED, false)) {
-            makeToast("Первый чесбокс On");
-        }
-        else {
-            makeToast("Первый чесбокс Off");
-        }
+        setVisibilityElement(firstExtraField, getIntent().getBooleanExtra(EXTRA_FIRST_CHECK_BOX_IS_CHECKED, false));
+        setVisibilityElement(secondExtraField, getIntent().getBooleanExtra(EXTRA_SECOND_CHECK_BOX_IS_CHECKED, false));
+        setVisibilityElement(thirdExtraField, getIntent().getBooleanExtra(EXTRA_THIRD_CHECK_BOX_IS_CHECKED, false));
+    }
 
-        if (getIntent().getBooleanExtra(EXTRA_SECOND_CHECK_BOX_IS_CHECKED, false)) {
-            makeToast("Второй чесбокс On");
+    private void setVisibilityElement(View element, boolean isVisible) {
+        if (isVisible) {
+            element.setVisibility(View.VISIBLE);
+            return;
         }
-        else {
-            makeToast("Второй чесбокс Off");
-        }
-
-        if (getIntent().getBooleanExtra(EXTRA_THIRD_CHECK_BOX_IS_CHECKED, false)) {
-            makeToast("Третий чесбокс On");
-        }
-        else {
-            makeToast("Третий чесбокс Off");
-        }
+        element.setVisibility(View.GONE);
     }
 
     private void makeToast(String string) {

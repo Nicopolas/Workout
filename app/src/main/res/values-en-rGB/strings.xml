@@ -3,7 +3,4 @@
     <string name="app_name">Workout_april</string>
     <string name="repeat_count_label">Repeat count: {0}</string>
     <string name="record_reps_label">Repeats: {0}</string>
-    <string name="first_check_box">Первый чекбокс</string>
-    <string name="second_check_box">Второй чекбокс</string>
-    <string name="third_check_box">Третий чекбокс</string>
 </resources>

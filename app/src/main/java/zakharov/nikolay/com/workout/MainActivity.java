@@ -1,9 +1,9 @@
 package zakharov.nikolay.com.workout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,6 +21,12 @@ import zakharov.nikolay.com.workout.model.WorkoutList;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
+    private static final String EXTRA_FIRST_CHECK_BOX_IS_CHECKED =
+            "firstCheckBoxIsChecked";
+    private static final String EXTRA_SECOND_CHECK_BOX_IS_CHECKED =
+            "secondCheckBoxIsChecked";
+    private static final String EXTRA_THIRD_CHECK_BOX_IS_CHECKED =
+            "thirdCheckBoxIsChecked";
     public static final String WORKOUT_INDEX = "index";
     public static final int REQUEST_CODE = 100;
 
@@ -32,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     CheckBox firstCheckBox;
     CheckBox secondCheckBox;
     CheckBox thirdCheckBox;
+
+    SharedPreferences sPref;
 
     LinearLayout workoutLayout;
 
@@ -81,11 +90,9 @@ public class MainActivity extends AppCompatActivity {
         thirdCheckBox = findViewById(R.id.thirdCheckBox);
 
         workoutLayout = findViewById(R.id.workout_layout);
-
-        setWorkoutRecordsOnButton();
     }
 
-    private void setWorkoutRecordsOnButton() {
+    private void setWorkoutRecords() {
         int firstWorkoutRecord = WorkoutList.getWorkouts().get(1).getRecordCount();
         int secondWorkoutRecord = WorkoutList.getWorkouts().get(2).getRecordCount();
         if (firstWorkoutRecord != 0) {
@@ -96,12 +103,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setListeners() {
+    private void setCheckBoxValueFromPreferences() {
+        sPref = getPreferences(MODE_PRIVATE);
+        firstCheckBox.setChecked(sPref.getBoolean(EXTRA_FIRST_CHECK_BOX_IS_CHECKED, false));
+        secondCheckBox.setChecked(sPref.getBoolean(EXTRA_SECOND_CHECK_BOX_IS_CHECKED, false));
+        thirdCheckBox.setChecked(sPref.getBoolean(EXTRA_THIRD_CHECK_BOX_IS_CHECKED, false));
+    }
 
+    private void setListeners() {
         workoutLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent detailIntent = WorkoutDetailActivity.newIntent(MainActivity.this, firstCheckBox.isChecked(), secondCheckBox.isChecked(), thirdCheckBox.isChecked());
+                Intent detailIntent = WorkoutDetailActivity.newIntent(MainActivity.this, 1 /*сюда индекс упражнения*/, firstCheckBox.isChecked(), secondCheckBox.isChecked(), thirdCheckBox.isChecked());
                 detailIntent.putExtra(WORKOUT_INDEX, 2);
                 startActivityForResult(detailIntent, REQUEST_CODE);
                 firstCheckBox.isChecked();
@@ -126,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume() called");
-        setWorkoutRecordsOnButton();
+        setWorkoutRecords();
     }
 
     @Override
@@ -139,6 +152,14 @@ public class MainActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         Log.d(TAG, "onStop() called");
+
+        sPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putBoolean(EXTRA_FIRST_CHECK_BOX_IS_CHECKED, firstCheckBox.isChecked());
+        ed.putBoolean(EXTRA_SECOND_CHECK_BOX_IS_CHECKED, secondCheckBox.isChecked());
+        ed.putBoolean(EXTRA_THIRD_CHECK_BOX_IS_CHECKED, thirdCheckBox.isChecked());
+        ed.commit();
+        Toast.makeText(this, "Text saved", Toast.LENGTH_SHORT).show();
     }
 
     @Override
