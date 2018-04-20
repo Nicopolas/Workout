@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         Log.d(TAG, "onResume() called");
         setWorkoutRecords();
+        setCheckBoxValueFromPreferences();
     }
 
     @Override
