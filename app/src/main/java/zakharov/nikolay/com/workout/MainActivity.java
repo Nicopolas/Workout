@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //тест
+
        /* workoutRecyclerView = findViewById(R.id.workout_recycler_view);
         layoutManager = new LinearLayoutManager(this);
         workoutRecyclerView.setLayoutManager(layoutManager);*/
