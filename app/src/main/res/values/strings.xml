@@ -8,4 +8,10 @@ Phasellus urna velit, accumsan nec dolor eget, suscipit malesuada magna. Fusce f
     <string name="record_reps_label">Повторов: {0}</string>
     <string name="record_date_label">Дата: {0}</string>
     <string name="text_btn_share">Поделиться</string>
+    <string name="first_check_box">Добавить первое дополнительное поле</string>
+    <string name="second_check_box">Добавить второе дополнительное поле</string>
+    <string name="third_check_box">Добавить третье дополнительное поле</string>
+    <string name="first_extra_field_text">Первое дополнительное поле</string>
+    <string name="second_extra_field_text">Второе дополнительное поле</string>
+    <string name="third_extra_field_text">Третье дополнительное поле</string>
 </resources>
