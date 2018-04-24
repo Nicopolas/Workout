@@ -80,10 +80,8 @@ public class WorkoutDetailActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             repsCount = savedInstanceState.getInt(EXTRA_REPS_COUNT, 0);
             lastRecordDate = savedInstanceState.getString(EXTRA_LAST_RECORD_DATE);
-            setDataRecord();
         }
-
-        List<?> list = new ArrayList<>();
+        setDataRecord();
 
         repsSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -169,33 +167,23 @@ public class WorkoutDetailActivity extends AppCompatActivity {
         repsSeekBar = findViewById(R.id.reps_seek_bar);
         repsCountTextView = findViewById(R.id.reps_count_text_view);
         recordDateTextView = findViewById(R.id.record_date_text_view);
-        recordDateTextView.setText(new SimpleDateFormat("dd.MM.yyy").format(workout.getRecordDate()));
         recordRepsCountTextView = findViewById(R.id.record_reps_text_view);
-        recordRepsCountTextView.setText(String.valueOf(workout.getRecordCount()));
         workoutTitleTextView = findViewById(R.id.workout_title_lable);
         workoutTitleTextView.setText(workout.getTitle());
         workoutDescriptionTextView = findViewById(R.id.description_text_view);
         firstExtraField = findViewById(R.id.first_extra_field);
-        firstExtraField.setText(R.string.first_extra_field_text);
         secondExtraField = findViewById(R.id.second_extra_field);
         thirdExtraField = findViewById(R.id.third_extra_field);
     }
 
     private void setListeners() {
-        workoutDescriptionTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                firstExtraField.setText("test");
-            }
-        });
-
-
         saveRecordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setDataRecord();
                 setResult();
                 WorkoutList.getWorkouts().get(workoutIndex).setRecordCount(repsCount);
+                WorkoutList.getWorkouts().get(workoutIndex).setRecordDate(new Date());
             }
         });
 
@@ -218,10 +206,11 @@ public class WorkoutDetailActivity extends AppCompatActivity {
                     MessageFormat.format(WorkoutDetailActivity.this.getString(R.string.record_date_label), lastRecordDate));
             setResult();
         }
-        recordRepsCountTextView.setText("Повторов: " + String.valueOf(repsCount));
-        recordDateTextView.setText(
-                MessageFormat.format(WorkoutDetailActivity.this.getString(R.string.record_date_label), lastRecordDate));
-        setResult();
+        if (repsCount != 0) {
+            recordRepsCountTextView.setText("Повторов: " + String.valueOf(repsCount));
+            recordDateTextView.setText(MessageFormat.format(WorkoutDetailActivity.this.getString(R.string.record_date_label), lastRecordDate));
+            setResult();
+        }
     }
 
     private String dataFormat(Date date) {
