@@ -12,14 +12,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -41,10 +40,6 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView workoutRecyclerView;
     WorkoutAdapter workoutAdapter;
 
-    CheckBox firstCheckBox;
-    CheckBox secondCheckBox;
-    CheckBox thirdCheckBox;
-
     SharedPreferences sPref;
 
     @Override
@@ -54,9 +49,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         WorkoutList.getInstance(this);
 
-        realizationOfRecyclerView();
-
         initGUI();
+    }
+
+    private void showPopup(View v, final int index) {
+        PopupMenu popupMenu = new PopupMenu(this, v);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.menu_open:
+                        startDetailActivity(index);
+                        return true;
+                    case R.id.menu_delete:
+                        WorkoutList.getWorkouts().remove(index);
+                        initGUI();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.inflate(R.menu.popup_menu);
+        popupMenu.show();
+    }
+
+    private void startDetailActivity(int workoutIndex) {
+        Intent intent = WorkoutDetailActivity.newIntent(this, workoutIndex);
+        startActivity(intent);
     }
 
     private void realizationOfRecyclerView() {
@@ -70,16 +90,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initGUI() {
-        firstCheckBox = findViewById(R.id.firstCheckBox);
-        secondCheckBox = findViewById(R.id.secondCheckBox);
-        thirdCheckBox = findViewById(R.id.thirdCheckBox);
-    }
-
-    private void setCheckBoxValueFromPreferences() {
-        sPref = getPreferences(MODE_PRIVATE);
-        firstCheckBox.setChecked(sPref.getBoolean(EXTRA_FIRST_CHECK_BOX_IS_CHECKED, false));
-        secondCheckBox.setChecked(sPref.getBoolean(EXTRA_SECOND_CHECK_BOX_IS_CHECKED, false));
-        thirdCheckBox.setChecked(sPref.getBoolean(EXTRA_THIRD_CHECK_BOX_IS_CHECKED, false));
+        realizationOfRecyclerView();
     }
 
     private String dataFormat(Date date) {
@@ -99,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume() called");
-        setCheckBoxValueFromPreferences();
         realizationOfRecyclerView();
     }
 
@@ -113,14 +123,6 @@ public class MainActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         Log.d(TAG, "onStop() called");
-
-        sPref = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor ed = sPref.edit();
-        ed.putBoolean(EXTRA_FIRST_CHECK_BOX_IS_CHECKED, firstCheckBox.isChecked());
-        ed.putBoolean(EXTRA_SECOND_CHECK_BOX_IS_CHECKED, secondCheckBox.isChecked());
-        ed.putBoolean(EXTRA_THIRD_CHECK_BOX_IS_CHECKED, thirdCheckBox.isChecked());
-        ed.commit();
-        Toast.makeText(this, "Text saved", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -181,16 +183,13 @@ public class MainActivity extends AppCompatActivity {
             holder.itemCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = WorkoutDetailActivity .newIntent(context, holder.getAdapterPosition(), firstCheckBox.isChecked(), secondCheckBox.isChecked(), thirdCheckBox.isChecked());
-                    startActivity(intent);
+                    startDetailActivity(holder.getAdapterPosition());
                 }
             });
             holder.popupMenuImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context,
-                            "Будет вызвано выпадающее меню для упражнение #" + holder.getAdapterPosition(),
-                            Toast.LENGTH_SHORT).show();
+                    showPopup(view, holder.getAdapterPosition());
                 }
             });
         }

@@ -28,12 +28,6 @@ public class WorkoutDetailActivity extends AppCompatActivity {
             "zakharov.nikolay.com.workout.WorkoutDetailActivity.repsCount";
     private static final String EXTRA_LAST_RECORD_DATE =
             "zakharov.nikolay.com.workout.answer_shown";
-    private static final String EXTRA_FIRST_CHECK_BOX_IS_CHECKED =
-            "firstCheckBoxIsChecked";
-    private static final String EXTRA_SECOND_CHECK_BOX_IS_CHECKED =
-            "secondCheckBoxIsChecked";
-    private static final String EXTRA_THIRD_CHECK_BOX_IS_CHECKED =
-            "thirdCheckBoxIsChecked";
     Button saveRecordButton;
     Button ShareButton;
     SeekBar repsSeekBar;
@@ -51,18 +45,11 @@ public class WorkoutDetailActivity extends AppCompatActivity {
     int workoutIndex;
     String lastRecordDate;
 
-    public static Intent newIntent(Context packageContext, int workoutIndex, boolean firstCheckBox, boolean secondCheckBox, boolean thirdCheckBox) {
+    public static Intent newIntent(Context packageContext, int workoutIndex) {
         Intent intent = new Intent(packageContext, WorkoutDetailActivity.class);// создаем интент
         intent.putExtra(MainActivity.WORKOUT_INDEX, workoutIndex);
-        intent.putExtra(EXTRA_FIRST_CHECK_BOX_IS_CHECKED, firstCheckBox);
-        intent.putExtra(EXTRA_SECOND_CHECK_BOX_IS_CHECKED, secondCheckBox);
-        intent.putExtra(EXTRA_THIRD_CHECK_BOX_IS_CHECKED, thirdCheckBox);
         return intent;
     }//статичный метод возвращающий интент (при создании)
-
-    public static int getRepsCountForResult(Intent result) {
-        return result.getIntExtra(EXTRA_REPS_COUNT, 0);
-    }//методы для вызова переменных из результата
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +62,6 @@ public class WorkoutDetailActivity extends AppCompatActivity {
 
         initGUI(workoutIndex);
         setListeners();
-        checkCheckBoxMainActivity();
 
         if (savedInstanceState != null) {
             repsCount = savedInstanceState.getInt(EXTRA_REPS_COUNT, 0);
@@ -216,12 +202,6 @@ public class WorkoutDetailActivity extends AppCompatActivity {
     private String dataFormat(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy 'в' HH:mm:ss", new Locale("ru"));
         return dateFormat.format(date).toString();
-    }
-
-    private void checkCheckBoxMainActivity() {
-        setVisibilityElement(firstExtraField, getIntent().getBooleanExtra(EXTRA_FIRST_CHECK_BOX_IS_CHECKED, false));
-        setVisibilityElement(secondExtraField, getIntent().getBooleanExtra(EXTRA_SECOND_CHECK_BOX_IS_CHECKED, false));
-        setVisibilityElement(thirdExtraField, getIntent().getBooleanExtra(EXTRA_THIRD_CHECK_BOX_IS_CHECKED, false));
     }
 
     private void setVisibilityElement(View element, boolean isVisible) {

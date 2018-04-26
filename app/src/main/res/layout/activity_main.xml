@@ -13,8 +13,7 @@
     <!-- RecyclerView -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="110dp">
+        android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/workout_recycler_view"
@@ -22,80 +21,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="center">
         </android.support.v7.widget.RecyclerView>
-    </LinearLayout>
-
-    <!-- CheckBoxes -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="bottom"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="2dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:text="@string/first_check_box"
-                android:textStyle="bold" />
-
-            <CheckBox
-                android:id="@+id/firstCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="2dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:text="@string/second_check_box"
-                android:textStyle="bold" />
-
-            <CheckBox
-                android:id="@+id/secondCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="2dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:text="@string/third_check_box"
-                android:textStyle="bold" />
-
-            <CheckBox
-                android:id="@+id/thirdCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
     </LinearLayout>
 
 </FrameLayout>
