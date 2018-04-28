@@ -20,4 +20,5 @@ Phasellus urna velit, accumsan nec dolor eget, suscipit malesuada magna. Fusce f
     <string name="menu_edit">Редактировать</string>
     <string name="menu_open">Открыть</string>
     <string name="menu_open_popup">Открыть PopupMenu</string>
+    <string name="menu_exit_app">Закрыть приложение</string>
 </resources>

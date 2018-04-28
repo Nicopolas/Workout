@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="DarkGray">#A9A9A9</color>
     <color name="Gainsboro">#DCDCDC</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

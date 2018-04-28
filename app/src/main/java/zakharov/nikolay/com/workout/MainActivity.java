@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +30,6 @@ import zakharov.nikolay.com.workout.model.WorkoutList;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
-    private static final String EXTRA_FIRST_CHECK_BOX_IS_CHECKED =
-            "firstCheckBoxIsChecked";
-    private static final String EXTRA_SECOND_CHECK_BOX_IS_CHECKED =
-            "secondCheckBoxIsChecked";
-    private static final String EXTRA_THIRD_CHECK_BOX_IS_CHECKED =
-            "thirdCheckBoxIsChecked";
     public static final String WORKOUT_INDEX = "index";
 
     RecyclerView workoutRecyclerView;
@@ -52,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         initGUI();
     }
 
+    //вывод PoPup меню
     private void showPopup(View v, final int index) {
         PopupMenu popupMenu = new PopupMenu(this, v);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -93,11 +89,42 @@ public class MainActivity extends AppCompatActivity {
         realizationOfRecyclerView();
     }
 
+    //Добавление меню в action bar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.action_bar_nemu, menu);
+        return true;
+    }
+    // обработка нажатий в action bar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_add:
+                addElement();
+                return true;
+            case R.id.menu_clear:
+                WorkoutList.getWorkouts().clear();
+                initGUI();
+                return true;
+            case R.id.menu_exit_app:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void addElement() {
+        WorkoutList.getWorkouts().add(new Workout("Управжнение " + String.valueOf(WorkoutList.getWorkouts().size()),
+                "Описание упражнения " + String.valueOf(WorkoutList.getWorkouts().size()),
+                0, new Date()));
+        initGUI();
+    }
+
     private String dataFormat(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy '\nв' HH:mm:ss", new Locale("ru"));
         return dateFormat.format(date).toString();
     }
-
 
     //якоря логирования
     @Override
