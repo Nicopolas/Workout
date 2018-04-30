@@ -1,129 +1,67 @@
 package zakharov.nikolay.com.workout;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
-import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import zakharov.nikolay.com.workout.model.Workout;
-import zakharov.nikolay.com.workout.model.WorkoutList;
+import zakharov.nikolay.com.workout.fragments.WorkoutDetailFragment;
+import zakharov.nikolay.com.workout.fragments.WorkoutListFragment;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     public static final String WORKOUT_INDEX = "index";
+    public static final String NAME_OF_FRAGMENT = "nameOfFragment";
 
-    RecyclerView workoutRecyclerView;
-    WorkoutAdapter workoutAdapter;
+    public FragmentManager fm = getSupportFragmentManager();
+    public Fragment fragment = fm.findFragmentById(R.id.fragment_container);//создание фрагмента
 
-    SharedPreferences sPref;
+    public int workoutIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate() called");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        WorkoutList.getInstance(this);
 
-        initGUI();
-    }
-
-    //вывод PoPup меню
-    private void showPopup(View v, final int index) {
-        PopupMenu popupMenu = new PopupMenu(this, v);
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.menu_open:
-                        startDetailActivity(index);
-                        return true;
-                    case R.id.menu_delete:
-                        WorkoutList.getWorkouts().remove(index);
-                        initGUI();
-                        return true;
-                    default:
-                        return false;
-                }
+        if (savedInstanceState != null){
+            workoutIndex = savedInstanceState.getInt(WORKOUT_INDEX);
+            if (savedInstanceState.getString(NAME_OF_FRAGMENT).contains(WorkoutDetailFragment.TAG)) {
+                startFragment(new WorkoutDetailFragment());
             }
-        });
-        popupMenu.inflate(R.menu.popup_menu);
-        popupMenu.show();
+        }
+
+        if (fragment == null) {
+            startFragment(new WorkoutListFragment());
+        }
+
     }
 
-    private void startDetailActivity(int workoutIndex) {
-        Intent intent = WorkoutDetailActivity.newIntent(this, workoutIndex);
-        startActivity(intent);
+    public void startFragment(Fragment nameFragment) {
+        fragment = nameFragment;
+        fm.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 
-    private void realizationOfRecyclerView() {
-        workoutRecyclerView = findViewById(R.id.workout_recycler_view);
-        workoutAdapter = new WorkoutAdapter(WorkoutList.getWorkouts(), this);
-//      LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
-        workoutRecyclerView.setAdapter(workoutAdapter);
-        workoutRecyclerView.setLayoutManager(linearLayoutManager);
+
+    @Override
+    public void onBackPressed() {
+        if (fragment.toString().contains(WorkoutDetailFragment.TAG)) {
+            startFragment(new WorkoutListFragment());
+            return;
+        }
+        super.onBackPressed();
     }
 
-    private void initGUI() {
-        realizationOfRecyclerView();
-    }
 
     //Добавление меню в action bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.action_bar_nemu, menu);
         return true;
-    }
-    // обработка нажатий в action bar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_add:
-                addElement();
-                return true;
-            case R.id.menu_clear:
-                WorkoutList.getWorkouts().clear();
-                initGUI();
-                return true;
-            case R.id.menu_exit_app:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void addElement() {
-        WorkoutList.getWorkouts().add(new Workout("Управжнение " + String.valueOf(WorkoutList.getWorkouts().size()),
-                "Описание упражнения " + String.valueOf(WorkoutList.getWorkouts().size()),
-                0, new Date()));
-        initGUI();
-    }
-
-    private String dataFormat(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy '\nв' HH:mm:ss", new Locale("ru"));
-        return dateFormat.format(date).toString();
     }
 
     //якоря логирования
@@ -137,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume() called");
-        realizationOfRecyclerView();
     }
 
     @Override
@@ -158,76 +95,12 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onDestroy() called");
     }
 
-
-    static class WorkoutViewHolder extends RecyclerView.ViewHolder {
-        ImageView workoutImageView;
-        TextView titleTextView;
-        TextView descriptionTextView;
-        TextView recordDateTextView;
-        TextView recordRepsCountTextView;
-        CardView itemCardView;
-        ImageView popupMenuImageView;
-
-
-        public WorkoutViewHolder(View itemView) {
-            super(itemView);
-            workoutImageView = itemView.findViewById(R.id.list_item_image_view);
-            titleTextView = itemView.findViewById(R.id.list_item_title_text_view);
-            descriptionTextView = itemView.findViewById(R.id.list_item_description_text_view);
-            recordDateTextView = itemView.findViewById(R.id.list_item_records_date);
-            recordRepsCountTextView = itemView.findViewById(R.id.list_item_record_repeats_count);
-            itemCardView = itemView.findViewById(R.id.list_item_card_view);
-            popupMenuImageView = itemView.findViewById(R.id.list_item_popup_menu);
-        }
-    }
-
-    class WorkoutAdapter extends RecyclerView.Adapter<WorkoutViewHolder> {
-        List<Workout> workouts;
-        Context context;
-
-        public WorkoutAdapter(List<Workout> workouts, Context context) {
-            this.workouts = workouts;
-            this.context = context;
-        }
-
-        @NonNull
-        @Override
-        public WorkoutViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.workout_list_item,
-                    parent, false);
-            return new WorkoutViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull final WorkoutViewHolder holder, int position) {
-            Workout workout = workouts.get(holder.getAdapterPosition());
-            holder.titleTextView.setText(workout.getTitle());
-            holder.descriptionTextView.setText(workout.getDescription());
-            holder.recordRepsCountTextView.setText(String.valueOf(workout.getRecordCount()));
-            if (workout.getRecordCount() != 0) {
-                holder.recordDateTextView.setText(dataFormat(workout.getRecordDate()));
-            }
-            holder.itemCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startDetailActivity(holder.getAdapterPosition());
-                }
-            });
-            holder.popupMenuImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    showPopup(view, holder.getAdapterPosition());
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            if (workouts != null && workouts.size() != 0) {
-                return workouts.size();
-            }
-            return 0;
-        }
-    }
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i(TAG, "onSaveInstanceState");
+        savedInstanceState.putString(NAME_OF_FRAGMENT, fragment.toString());
+        savedInstanceState.putInt(WORKOUT_INDEX, workoutIndex);
+    }//сохранение данных активности
 }
 

@@ -1,11 +1,12 @@
-package zakharov.nikolay.com.workout;
+package zakharov.nikolay.com.workout.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -14,18 +15,23 @@ import android.widget.Toast;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
+import zakharov.nikolay.com.workout.MainActivity;
+import zakharov.nikolay.com.workout.R;
 import zakharov.nikolay.com.workout.model.Workout;
 import zakharov.nikolay.com.workout.model.WorkoutList;
 
-public class WorkoutDetailActivity extends AppCompatActivity {
-    public static final String TAG = "WorkoutDetailActivity";
+/**
+ * Created by 1 on 30.04.2018.
+ */
+
+public class WorkoutDetailFragment extends Fragment {
+    public static final String TAG = "WorkoutDetailFragment";
+    public View view;
     private static final String EXTRA_REPS_COUNT =
-            "zakharov.nikolay.com.workout.WorkoutDetailActivity.repsCount";
+            "zakharov.nikolay.com.workout.WorkoutDetailFragment.repsCount";
     private static final String EXTRA_LAST_RECORD_DATE =
             "zakharov.nikolay.com.workout.answer_shown";
     Button saveRecordButton;
@@ -45,46 +51,19 @@ public class WorkoutDetailActivity extends AppCompatActivity {
     int workoutIndex;
     String lastRecordDate;
 
-    public static Intent newIntent(Context packageContext, int workoutIndex) {
-        Intent intent = new Intent(packageContext, WorkoutDetailActivity.class);// создаем интент
-        intent.putExtra(MainActivity.WORKOUT_INDEX, workoutIndex);
-        return intent;
-    }//статичный метод возвращающий интент (при создании)
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate() called");
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView called");
+        View view = inflater.inflate(R.layout.workout_detail_fragment, container, false);
+        this.view = view;
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_workout_detail);
-
-        workoutIndex = getIntent().getIntExtra(MainActivity.WORKOUT_INDEX, 0);
+        WorkoutList.getInstance(getActivity());
+        workoutIndex = ((MainActivity) getActivity()).workoutIndex;
 
         initGUI(workoutIndex);
         setListeners();
 
-        if (savedInstanceState != null) {
-            repsCount = savedInstanceState.getInt(EXTRA_REPS_COUNT, 0);
-            lastRecordDate = savedInstanceState.getString(EXTRA_LAST_RECORD_DATE);
-        }
-        setDataRecord();
-
-        repsSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                repsCountTextView.setText(MessageFormat.format(getString(R.string.repeat_count_label), i));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+        return view;
     }
 
     public void sendOut() {
@@ -94,11 +73,6 @@ public class WorkoutDetailActivity extends AppCompatActivity {
         startActivity(i);
     }//Поделиться
 
-    private void setResult() {
-        Intent data = new Intent();
-        data.putExtra(EXTRA_REPS_COUNT, repsCount);//добавляем в интент repsCount
-        setResult(RESULT_OK, data);
-    } //заполнение интента результата
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -147,27 +121,43 @@ public class WorkoutDetailActivity extends AppCompatActivity {
     private void initGUI(int index) {
         Workout workout = WorkoutList.getWorkoutByIndex(index);
 
-        pullUpsImageView = findViewById(R.id.pull_ups_image_view);
-        saveRecordButton = findViewById(R.id.save_record_button);
-        ShareButton = findViewById(R.id.btn_share);
-        repsSeekBar = findViewById(R.id.reps_seek_bar);
-        repsCountTextView = findViewById(R.id.reps_count_text_view);
-        recordDateTextView = findViewById(R.id.record_date_text_view);
-        recordRepsCountTextView = findViewById(R.id.record_reps_text_view);
-        workoutTitleTextView = findViewById(R.id.workout_title_lable);
+        pullUpsImageView = view.findViewById(R.id.pull_ups_image_view);
+        saveRecordButton = view.findViewById(R.id.save_record_button);
+        ShareButton = view.findViewById(R.id.btn_share);
+        repsSeekBar = view.findViewById(R.id.reps_seek_bar);
+        repsCountTextView = view.findViewById(R.id.reps_count_text_view);
+        recordDateTextView = view.findViewById(R.id.record_date_text_view);
+        recordRepsCountTextView = view.findViewById(R.id.record_reps_text_view);
+        workoutTitleTextView = view.findViewById(R.id.workout_title_lable);
         workoutTitleTextView.setText(workout.getTitle());
-        workoutDescriptionTextView = findViewById(R.id.description_text_view);
-        firstExtraField = findViewById(R.id.first_extra_field);
-        secondExtraField = findViewById(R.id.second_extra_field);
-        thirdExtraField = findViewById(R.id.third_extra_field);
+        workoutDescriptionTextView = view.findViewById(R.id.description_text_view);
+        firstExtraField = view.findViewById(R.id.first_extra_field);
+        secondExtraField = view.findViewById(R.id.second_extra_field);
+        thirdExtraField = view.findViewById(R.id.third_extra_field);
     }
 
     private void setListeners() {
+        repsSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                repsCountTextView.setText(MessageFormat.format(getString(R.string.repeat_count_label), i));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
         saveRecordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setDataRecord();
-                setResult();
                 WorkoutList.getWorkouts().get(workoutIndex).setRecordCount(repsCount);
                 WorkoutList.getWorkouts().get(workoutIndex).setRecordDate(new Date());
             }
@@ -187,15 +177,13 @@ public class WorkoutDetailActivity extends AppCompatActivity {
             repsCount = reps;
             lastRecordDate = dataFormat(new Date());
             recordRepsCountTextView.setText(
-                    MessageFormat.format(WorkoutDetailActivity.this.getString(R.string.record_reps_label), repsCount));
+                    MessageFormat.format(getActivity().getString(R.string.record_reps_label), repsCount));
             recordDateTextView.setText(
-                    MessageFormat.format(WorkoutDetailActivity.this.getString(R.string.record_date_label), lastRecordDate));
-            setResult();
+                    MessageFormat.format(getActivity().getString(R.string.record_date_label), lastRecordDate));
         }
         if (repsCount != 0) {
             recordRepsCountTextView.setText("Повторов: " + String.valueOf(repsCount));
-            recordDateTextView.setText(MessageFormat.format(WorkoutDetailActivity.this.getString(R.string.record_date_label), lastRecordDate));
-            setResult();
+            recordDateTextView.setText(MessageFormat.format(getActivity().getString(R.string.record_date_label), lastRecordDate));
         }
     }
 
@@ -213,7 +201,8 @@ public class WorkoutDetailActivity extends AppCompatActivity {
     }
 
     private void makeToast(String string) {
-        Toast toast = Toast.makeText(this, string, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(getActivity(), string, Toast.LENGTH_SHORT);
         toast.show();
     }
+
 }
