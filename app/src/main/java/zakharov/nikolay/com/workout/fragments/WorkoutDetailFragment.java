@@ -47,8 +47,8 @@ public class WorkoutDetailFragment extends Fragment {
     TextView secondExtraField;
     TextView thirdExtraField;
 
-    int repsCount = 0;
     int workoutIndex;
+    int repsCount;
     String lastRecordDate;
 
     @Override
@@ -59,6 +59,7 @@ public class WorkoutDetailFragment extends Fragment {
 
         WorkoutList.getInstance(getActivity());
         workoutIndex = ((MainActivity) getActivity()).workoutIndex;
+        repsCount = WorkoutList.getWorkouts().get(workoutIndex).getRecordCount();
 
         initGUI(workoutIndex);
         setListeners();
@@ -131,9 +132,7 @@ public class WorkoutDetailFragment extends Fragment {
         workoutTitleTextView = view.findViewById(R.id.workout_title_lable);
         workoutTitleTextView.setText(workout.getTitle());
         workoutDescriptionTextView = view.findViewById(R.id.description_text_view);
-        firstExtraField = view.findViewById(R.id.first_extra_field);
-        secondExtraField = view.findViewById(R.id.second_extra_field);
-        thirdExtraField = view.findViewById(R.id.third_extra_field);
+        setDataRecord();
     }
 
     private void setListeners() {
@@ -183,6 +182,7 @@ public class WorkoutDetailFragment extends Fragment {
         }
         if (repsCount != 0) {
             recordRepsCountTextView.setText("Повторов: " + String.valueOf(repsCount));
+            lastRecordDate = dataFormat(WorkoutList.getWorkouts().get(workoutIndex).getRecordDate());
             recordDateTextView.setText(MessageFormat.format(getActivity().getString(R.string.record_date_label), lastRecordDate));
         }
     }

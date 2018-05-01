@@ -1,7 +1,6 @@
 package zakharov.nikolay.com.workout.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -11,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,13 +46,13 @@ public class WorkoutListFragment extends Fragment {
         Log.d(TAG, "onCreateView called");
         View view = inflater.inflate(R.layout.workout_list_fragment, container, false);
         this.view = view;
+        setHasOptionsMenu(true);//важно для action bar
 
         WorkoutList.getInstance(getActivity());
         initGUI();
 
         return view;
     }
-
 
     //вывод PoPup меню
     private void showPopup(View v, final int index) {
@@ -95,7 +96,13 @@ public class WorkoutListFragment extends Fragment {
     }
 
 
-    //не работает!!!!
+    //Добавление меню в action bar в фрагмент
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        return;
+    }
+
     // обработка нажатий в action bar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

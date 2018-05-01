@@ -21,4 +21,27 @@ Phasellus urna velit, accumsan nec dolor eget, suscipit malesuada magna. Fusce f
     <string name="menu_open">Открыть</string>
     <string name="menu_open_popup">Открыть PopupMenu</string>
     <string name="menu_exit_app">Закрыть приложение</string>
+
+    <string name="menu_open_main_windows">Открыть главное окно</string>
+    <string name="menu_about_developers">О разработчиках</string>
+    <string name="menu_share">Поделиться</string>
+
+
+    <string name="android_studio">Android Studio</string>
+    <string name="android_studio_web">zakharov.nikolay.com</string>
+
+    <string name="nav_camera">Import</string>
+    <string name="nav_gallery">Gallery</string>
+    <string name="nav_slideshow">SlideShow</string>
+    <string name="nav_manage">Tools</string>
+
+    <string name="nav_share">Share</string>
+    <string name="nav_send">Send</string>
+
+    <string name="main_content">Main content</string>
+    <string name="gallery_opened">Gallery opened</string>
+    <string name="menu_communicate">Communicate</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

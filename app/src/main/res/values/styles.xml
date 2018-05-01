@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -6,11 +6,27 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorBlack</item>
 
-        <!-- Удаляем App bar
+        <!-- Удаляем стандартный App bar -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        -->
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- My personal theme -->
+    <style name="AppTheme.MyTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorBlack</item>
+
+        <!-- Удаляем стандартный App bar -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="recordTextViewStyle">
@@ -19,6 +35,19 @@
         <item name="android:layout_weight">1</item>
         <item name="android:padding">4dp</item>
         <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="AppTheme.MyButton" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingLeft">20dp</item>
+    </style>
+
+    <style name="AppTheme.MyTextViewStyle" parent="@style/Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black_overlay</item>
+        <item name="android:typeface">serif</item>
     </style>
 
 </resources>
