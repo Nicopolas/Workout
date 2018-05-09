@@ -10,6 +10,7 @@ public class WorkoutList {
     private Context context;
     private static List<Workout> workouts;
     private static WorkoutList ourInstance;
+    public  int flag = 0;
 
 
     private WorkoutList(Context context) {

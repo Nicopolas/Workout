@@ -1,11 +1,11 @@
 package zakharov.nikolay.com.workout;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -16,12 +16,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import zakharov.nikolay.com.workout.fragments.WorkoutDetailFragment;
 import zakharov.nikolay.com.workout.fragments.WorkoutListFragment;
+import zakharov.nikolay.com.workout.model.WorkoutList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = "MainActivity";
@@ -29,27 +28,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String NAME_OF_FRAGMENT = "nameOfFragment";
 
     public FragmentManager fm = getSupportFragmentManager();
-    public Fragment fragment = fm.findFragmentById(R.id.fragment_container);//создание фрагмента
+    //public Fragment fragment = fm.findFragmentById(R.id.fragment_container);//создание фрагмента
 
-    public int workoutIndex;
+    public int workoutIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate() called");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.workout_drawer_layout);
+        WorkoutListFragment workoutList = new WorkoutListFragment();
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             workoutIndex = savedInstanceState.getInt(WORKOUT_INDEX);
-            if (savedInstanceState.getString(NAME_OF_FRAGMENT).contains(WorkoutDetailFragment.TAG)) {
-                startFragment(new WorkoutDetailFragment());
-            }
         }
 
-        if (fragment == null) {
-            startFragment(new WorkoutListFragment());
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            startFragment(workoutList);
+        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            fm.beginTransaction().replace(R.id.list_container, workoutList).commit();
+            fm.beginTransaction().replace(R.id.detail_container, new WorkoutDetailFragment()).commit();
         }
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -74,9 +73,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void startFragment(Fragment nameFragment) {
-        fragment = nameFragment;
         fm.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .replace(R.id.fragment_container, nameFragment)
                 .commit();
     }
 
@@ -84,10 +82,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
         //обработка нажатия в детальном фрагменте
-        if (fragment.toString().contains(WorkoutDetailFragment.TAG)) {
+/*        if (fragment.toString().contains(WorkoutDetailFragment.TAG)) {
             startFragment(new WorkoutListFragment());
             return;
-        }
+        }*/
         //обработка нажатия в Navigation Drawer
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -139,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         Log.i(TAG, "onSaveInstanceState");
-        savedInstanceState.putString(NAME_OF_FRAGMENT, fragment.toString());
         savedInstanceState.putInt(WORKOUT_INDEX, workoutIndex);
     }//сохранение данных активности
 
@@ -147,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_main_windows:
-                startFragment(new WorkoutListFragment());
+                /*startFragment(new WorkoutListFragment());*/
                 break;
             case R.id.nav_manage:
                 makeToast("В разарботке");

@@ -7,7 +7,7 @@
     android:paddingBottom="4dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="4dp"
+    android:paddingTop="55dp"
     tools:context=".MainActivity">
 
     <!-- RecyclerView -->

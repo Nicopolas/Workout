@@ -1,6 +1,7 @@
 package zakharov.nikolay.com.workout.fragments;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -40,12 +41,12 @@ public class WorkoutListFragment extends Fragment {
     WorkoutAdapter workoutAdapter;
     public View view;
 
-
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView called");
-        View view = inflater.inflate(R.layout.workout_list_fragment, container, false);
-        this.view = view;
+        int flagg = WorkoutList.getInstance(getActivity()).flag+1;
+        WorkoutList.getInstance(getActivity()).flag++;
+        Log.d(TAG, "onCreateView called flag = " + flagg);
+        view = inflater.inflate(R.layout.workout_list_fragment, container, false);
         setHasOptionsMenu(true);//важно для action bar
 
         WorkoutList.getInstance(getActivity());
@@ -209,8 +210,10 @@ public class WorkoutListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull final WorkoutViewHolder holder, int position) {
             Workout workout = workouts.get(holder.getAdapterPosition());
-            holder.titleTextView.setText(workout.getTitle());
-            holder.descriptionTextView.setText(workout.getDescription());
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                holder.titleTextView.setText(workout.getTitle());
+                holder.descriptionTextView.setText(workout.getDescription());
+            }
             holder.recordRepsCountTextView.setText(String.valueOf(workout.getRecordCount()));
             if (workout.getRecordCount() != 0) {
                 holder.recordDateTextView.setText(dataFormat(workout.getRecordDate()));
